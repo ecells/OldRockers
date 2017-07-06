@@ -25,7 +25,7 @@ const int senHum2Pin = A1; // Sensor humedad 2
 int senHum2;    // variable to read the value from the analog pin 
 SimpleTimer timer; //the timer object
 const int interval = 1000; //interval in miliseconds
-const int cicloRiego = 20000 / interval;
+const int cicloRiego = 15000 / interval;
 const int cicloVal = 10000 / interval;
 int cuentaInterval = 0;
 int cuentaIntervalVal1 = 0;
