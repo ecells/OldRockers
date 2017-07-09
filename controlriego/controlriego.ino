@@ -6,14 +6,18 @@
 // Initialize Wifi connection to the router  
 char ssid[] = "WLAN_1674";             // your network SSID (name)  
 char pass[] = "175e08dec7d27af558b6";            // your network key 
+//char ssid[] = "iPhone de Miguel Angel";             // your network SSID (name)  
+//char pass[] = "descompresion";            // your network key 
+//char ssid[] = "EWA@GUEST";             // your network SSID (name)  
+//char pass[] = "trgbxbt6";            // your network key 
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
 // Initialize Telegram BOT  
-const char *BotToken = "399706449:AAEeu-ix49OS3dDMTNzxfYPpPKHCQN_SbLM";    // your Bot Token  
-WiFiSSLClient client;  
-TelegramBot bot(BotToken, client);
+//const char *BotToken = "399706449:AAEeu-ix49OS3dDMTNzxfYPpPKHCQN_SbLM";    // your Bot Token  
+//WiFiSSLClient client;  
+//TelegramBot bot(BotToken,client);
 
 const int ledGeneral = 13;  // Estado General
 int General = 0; // Variable que contiene el estado general del sistema (0:OFF, 1: Standby, 2: ON)
@@ -29,6 +33,7 @@ int senHum1;    // variable to read the value from the analog pin
 const int senHum2Pin = A1; // Sensor humedad 2
 int senHum2;    // variable to read the value from the analog pin 
 SimpleTimer timer; //the timer object
+SimpleTimer timerBot; //the timer object
 const int interval = 1000; //interval in miliseconds
 const int cicloRiego = 20000 / interval;
 const int cicloVal = 10000 / interval;
@@ -58,37 +63,34 @@ void printWiFiStatus() {
   Serial.println(ip);
 }
 
-void setup() 
-{  
- Serial.begin(115200);  
- while (!Serial) {}  //Start running when the serial is open 
- delay(3000);  
- // attempt to connect to Wifi network:  
- Serial.print("Connecting Wifi: ");  
- Serial.println(ssid);  
- while (WiFi.begin(ssid, pass) != WL_CONNECTED) 
-       {  
-   Serial.print(".");  
-   delay(500);  
- }  
- Serial.println("");  
- Serial.println("WiFi connected");  
- pinMode(ledGeneral, OUTPUT);
- pinMode(ledVal1, OUTPUT); 
- pinMode(ledVal2, OUTPUT); 
+/*
+void leeMensajes()
+{
 
- timer.setInterval(interval, bucleRiego); // call Riega every "interval" miliseconds
-
-  server.begin();                           // start the web server on port 80
-  printWiFiStatus();                        // you're connected now, so print out the status
+ Serial.println("tratamiento mensajes");
  
+ message m = bot.getUpdates(); // Read new messages  
+ if (m.text.equals("on")) 
+       {  
+   General = 1; 
+   Serial.println("message On received");  
+   bot.sendMessage(m.chat_id, "The System is now ON");  
+ }  
+ else if (m.text.equals("off")) 
+       {  
+   General = 0; 
+   Serial.println("message Off received");  
+   bot.sendMessage(m.chat_id, "The Systemd is now OFF");  
+ }
 
-}  
-
+ Serial.println(m.chat_id);
+}
+*/
 
 void bucleRiego()
 {
 
+ Serial.println("bucle riego");
 
 
   if (General == 0)
@@ -221,6 +223,36 @@ void bucleRiego()
   }
 }
 
+void setup() 
+{  
+ Serial.begin(115200);  
+ while (!Serial) {}  //Start running when the serial is open 
+ delay(3000);  
+ // attempt to connect to Wifi network:  
+ Serial.print("Connecting Wifi: ");  
+ Serial.println(ssid);  
+ while (WiFi.begin(ssid, pass) != WL_CONNECTED) 
+       {  
+   Serial.print(".");  
+   delay(500);  
+ }  
+ Serial.println("");  
+ Serial.println("WiFi connected");  
+ pinMode(ledGeneral, OUTPUT);
+ pinMode(ledVal1, OUTPUT); 
+ pinMode(ledVal2, OUTPUT); 
+
+ timer.setInterval(interval, bucleRiego); // call Riega every "interval" miliseconds
+ //timerBot.setInterval(10000, leeMensajes); // call Riega every "interval" miliseconds
+
+  server.begin();                           // start the web server on port 80
+  printWiFiStatus();                        // you're connected now, so print out the status
+//  bot.begin();
+
+}  
+
+
+
 void loop() 
 {  
   WiFiClient client = server.available();   // listen for incoming clients
@@ -262,22 +294,23 @@ void loop()
 
         // Check to see if the client request was "GET /H" or "GET /L":
         if (currentLine.endsWith("GET /H")) {
-
           General = 1;
         }
         if (currentLine.endsWith("GET /L")) {
           General = 0;
         }
+        Serial.println(currentLine);
       }
     }
     // close the connection:
     client.stop();
-    Serial.println("client disonnected");
+    Serial.println("client disconnected");
 
 
   }
 
    timer.run();
+   //timerBot.run();
 }  
 
 
