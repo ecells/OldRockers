@@ -14,8 +14,8 @@ The syntax to start the docker container is: docker run -v /Users/mapl/Documents
 
 The code to interact with the Telegram Bot and send messages to the Arduino is here (once you start the Docker): home/OldRockers/TelegramBotLibrary/tgbot-cpp/tgbot-cpp/samples/main.cpp
 
-You will have to connect the laptop to your Arduino MKR1000, open the terminal, read the IP address assigned to it and modify the IP address in main.cpp: #define IPArd <IP address>
+You will have to connect the laptop to your Arduino MKR1000, open the terminal, read the IP address assigned to it and modify the IP address in main.cpp: #define IPArd "IP address"
 
 The Telegram Bot is called "ControlRiego_bot". It is started with "/start". The inline menu is self-explanatory, ON to switch on the watering system, OFF to switch it off.
 
-An alternative way to switch on and off is by connecting, within the same local area network of the Arduino to http://<IP address> and follow the on screen instructions.
+An alternative way to switch on and off is by connecting, within the same local area network of the Arduino to http://"IP address" and follow the on screen instructions.
