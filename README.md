@@ -16,4 +16,6 @@ The code to interact with the Telegram Bot and send messages to the Arduino is h
 
 You will have to connect the laptop to your Arduino MKR1000, open the terminal, read the IP address assigned to it and modify the IP address in main.cpp: #define IPArd <IP address>
 
-The Telegram Bot is called "ControlRiego_bot". It is started with "/start".
+The Telegram Bot is called "ControlRiego_bot". It is started with "/start". The inline menu is self-explanatory, ON to switch on the watering system, OFF to switch it off.
+
+An alternative way to switch on and off is by connecting, within the same local area network of the Arduino to http://<IP address> and follow the on screen instructions.
